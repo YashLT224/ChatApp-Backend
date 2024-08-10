@@ -19,21 +19,51 @@ module.exports = {
   // bootstrap(/*{ strapi }*/) {},
 
 
-  bootstrap({ strapi }) {
-    // Start the WebSocket server
-    const wss = new WebSocket.Server({ port: 8080 });
+  // bootstrap({ strapi }) {
+  //   // Start the WebSocket server
+  //   const wss = new WebSocket.Server({ port: 8080 });
 
+  //   wss.on('connection', (ws) => {
+  //     ws.on('message', (message) => {
+  //       console.log('Received:', message);
+  //       // Echo the message back to the client
+  //       ws.send(`Server: ${message}`);
+  //     });
+
+  //     ws.send('Welcome to Aynas`s World!');
+  //   });
+
+  //   strapi.wss = wss; // Attaching the WebSocket server to the Strapi instance
+  //   console.log('WebSocket server is running on ws://localhost:8080');
+  // },
+  bootstrap({ strapi }) {
+    const wss = new WebSocket.Server({ noServer: true });
+
+    // When a client connects
     wss.on('connection', (ws) => {
+      console.log('New client connected');
+
+      // When a message is received
       ws.on('message', (message) => {
         console.log('Received:', message);
         // Echo the message back to the client
-        ws.send(`Server: ${message}`);
+        ws.send(`Server received: ${message}`);
       });
 
-      ws.send('Welcome to Aynas`s World!');
+      ws.on('close', () => {
+        console.log('Client disconnected');
+      });
     });
 
-    strapi.wss = wss; // Attaching the WebSocket server to the Strapi instance
-    console.log('WebSocket server is running on ws://localhost:8080');
+    const server = strapi.server.httpServer;
+    
+    // Integrate the WebSocket server with the existing HTTP server
+    server.on('upgrade', (request, socket, head) => {
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+      });
+    });
+
+    console.log('WebSocket server is running');
   },
 };
