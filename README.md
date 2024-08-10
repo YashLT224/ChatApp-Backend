@@ -44,7 +44,7 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/ChatApp-Backend.git
+   git clone https://github.com/yashlt224/ChatApp-Backend.git
    cd ChatApp-Backend
    ```
 
@@ -145,7 +145,7 @@ Contributions are welcome! If you have suggestions or find any bugs, feel free t
 2. **Clone your fork:**
 
    ```bash
-   git clone https://github.com/yourusername/ChatApp-Backend.git
+   git clone https://github.com/yashlt224/ChatApp-Backend.git
    ```
 
 3. **Create a new branch for your feature or bugfix:**
